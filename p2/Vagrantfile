@@ -1,0 +1,27 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  
+  config.vm.define "rsafS" do |control|
+    control.vm.provider "virtualbox" do |v|
+      v.name = "rsafS"
+    end
+    control.vm.hostname = "rsafS"
+    control.vm.network "private_network", ip: "192.168.56.110"
+    control.vm.network "public_network"
+    control.vm.network "forwarded_port", guest: 80, host: 8080
+    control.vm.provision "shell", inline: <<-SHELL
+
+      sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
+
+      sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
+
+      curl -sfL https://get.k3s.io | sh -
+
+      mkdir ~/.kube/
+      sudo chmod 777 /etc/rancher/k3s/k3s.yaml
+      sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
+      export KUBECONFIG='/etc/rancher/k3s/k3s.yaml'
+      echo "Provisioning complete"
+    SHELL
+  end
+end
