@@ -1,27 +1,69 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+BOX="ubuntu/trusty64"
+BOX_VERSION="20191107.0.0"
+
+VM_MASTER_NAME="rsafS"
+VM_WORKER_NAME="rsafSW"
+
+CPU=1
+MEM=512
+
+HOST_SRC_PATH=
+VM_SRC_PATH=
+
 Vagrant.configure("2") do |config|
-  config.vm.define "rsafSx" do |control|
-    control.vm.provider "virtualbox" do |v|
-      # v.gui = true
-      v.memory = 1000
-      v.cpus = 1
-      v.name = "rsafSx"
+
+  config.vm.box = BOX
+  config.vm.box_version = BOX_VERSION
+  
+  
+  config.vm.define VM_MASTER_NAME do |control|
+    control.vm.network "private_network", ip:  "192.168.56.110"
+    control.vm.hostname = VM_MASTER_NAME
+    control.vm.provider "virtualbox" do |vb|
+      vb.memory=MEM
+      vb.cpus=CPU
+      vb.name=VM_MASTER_NAME
     end
-    # config.vm.network "public_network"
-    # config.vm.network "forwarded_port", guest: 80, host: 8080
-    control.vm.box = "generic/alpine318"
-    control.vm.network "private_network", ip: "192.168.56.110"
   end
 
-  config.vm.define "rsafSW" do |control|
-    control.vm.provider "virtualbox" do |v|
-      v.name = "rsafSW"
-      v.memory = 500
-      v.cpus = 2
+  config.vm.define VM_WORKER_NAME do |control|
+    control.vm.network "public_network", ip: "192.168.56.111"
+    control.vm.hostname = VM_WORKER_NAME
+    control.vm.provider "virtualbox" do |vb|
+      vb.memory=MEM
+      vb.cpus=CPU
+      vb.name=VM_WORKER_NAME
     end
-    # config.vm.network "public_network"
-    # config.vm.network "forwarded_port", guest: 80, host: 8081
-    control.vm.box = "generic/alpine318"
-    control.vm.network "private_network", ip: "192.168.56.111"
   end
 end
 
+
+# en0: Ethernet <- the name of network interface
+
+
+##### this public network for the host one
+# vagrant@rsafs:~$ ifconfig eth1
+# eth1      Link encap:Ethernet  HWaddr 08:00:27:85:7e:c9  
+#           inet addr:192.168.56.110  Bcast:192.168.56.255  Mask:255.255.255.0
+#           inet6 addr: fe80::a00:27ff:fe85:7ec9/64 Scope:Link
+#           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+#           RX packets:546 errors:0 dropped:0 overruns:0 frame:0
+#           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+#           collisions:0 txqueuelen:1000 
+#           RX bytes:79038 (79.0 KB)  TX bytes:648 (648.0 B)
+
+
+
+##### this private network for the host one
+# vagrant@rsafs:~$ ifconfig eth1
+# eth1      Link encap:Ethernet  HWaddr 08:00:27:bf:f0:93  
+#           inet addr:192.168.56.110  Bcast:192.168.56.255  Mask:255.255.255.0
+#           inet6 addr: fe80::a00:27ff:febf:f093/64 Scope:Link
+#           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+#           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+#           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
+#           collisions:0 txqueuelen:1000 
+#           RX bytes:0 (0.0 B)  TX bytes:648 (648.0 B)
