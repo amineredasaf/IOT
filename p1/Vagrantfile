@@ -1,11 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX="ubuntu/trusty64"
-BOX_VERSION="20191107.0.0"
+BOX="centos/stream9"
+# BOX_VERSION="2011.0"
+BOX_URL="https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-Vagrant-9-20250113.0.x86_64.vagrant-virtualbox.box"
+
+
+# BOX="debian/jessie64"
+# BOX_VERSION="8.11.1"
+# BOX_URL="https://portal.cloud.hashicorp.com/vagrant/discover/debian/jessie64/versions/8.11.1"
 
 VM_MASTER_NAME="rsafS"
 VM_WORKER_NAME="rsafSW"
+MASTER_IP="192.168.56.110"
 
 CPU=1
 MEM=512
@@ -16,11 +23,12 @@ VM_SRC_PATH=
 Vagrant.configure("2") do |config|
 
   config.vm.box = BOX
-  config.vm.box_version = BOX_VERSION
-  
+  # # config.vm.box_version = BOX_VERSION
+  config.vm.box_url= BOX_URL
   
   config.vm.define VM_MASTER_NAME do |control|
-    control.vm.network "private_network", ip:  "192.168.56.110"
+    control.vm.provision "shell", privileged: true, path: "scripts/master.sh", args: [MASTER_IP]
+    control.vm.network "private_network", ip:  MASTER_IP
     control.vm.hostname = VM_MASTER_NAME
     control.vm.provider "virtualbox" do |vb|
       vb.memory=MEM
