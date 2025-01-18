@@ -1,9 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-BOX="centos/stream9"
+BOX="ubuntu/jammy64"
 # BOX_VERSION="2011.0"
-BOX_URL="https://cloud.centos.org/centos/9-stream/x86_64/images/CentOS-Stream-Vagrant-9-20250113.0.x86_64.vagrant-virtualbox.box"
+BOX_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-vagrant.box"
 
 
 # BOX="debian/jessie64"
@@ -27,9 +27,9 @@ Vagrant.configure("2") do |config|
   config.vm.box_url= BOX_URL
   
   config.vm.define VM_MASTER_NAME do |control|
-    control.vm.provision "shell", privileged: true, path: "scripts/master.sh", args: [MASTER_IP]
     control.vm.network "private_network", ip:  MASTER_IP
     control.vm.hostname = VM_MASTER_NAME
+    control.vm.provision "shell", privileged: true, path: "scripts/master.sh", args: [MASTER_IP]
     control.vm.provider "virtualbox" do |vb|
       vb.memory=MEM
       vb.cpus=CPU
@@ -47,31 +47,3 @@ Vagrant.configure("2") do |config|
     end
   end
 end
-
-
-# en0: Ethernet <- the name of network interface
-
-
-##### this public network for the host one
-# vagrant@rsafs:~$ ifconfig eth1
-# eth1      Link encap:Ethernet  HWaddr 08:00:27:85:7e:c9  
-#           inet addr:192.168.56.110  Bcast:192.168.56.255  Mask:255.255.255.0
-#           inet6 addr: fe80::a00:27ff:fe85:7ec9/64 Scope:Link
-#           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-#           RX packets:546 errors:0 dropped:0 overruns:0 frame:0
-#           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
-#           collisions:0 txqueuelen:1000 
-#           RX bytes:79038 (79.0 KB)  TX bytes:648 (648.0 B)
-
-
-
-##### this private network for the host one
-# vagrant@rsafs:~$ ifconfig eth1
-# eth1      Link encap:Ethernet  HWaddr 08:00:27:bf:f0:93  
-#           inet addr:192.168.56.110  Bcast:192.168.56.255  Mask:255.255.255.0
-#           inet6 addr: fe80::a00:27ff:febf:f093/64 Scope:Link
-#           UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
-#           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
-#           TX packets:8 errors:0 dropped:0 overruns:0 carrier:0
-#           collisions:0 txqueuelen:1000 
-#           RX bytes:0 (0.0 B)  TX bytes:648 (648.0 B)
