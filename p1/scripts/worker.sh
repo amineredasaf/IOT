@@ -8,12 +8,12 @@
 echo "Hello World"
 sudo systemctl disable --now  ufw
 # curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --token 12345
-sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --flannel-backend none" K3S_TOKEN=12345 sh -s -
+# sudo curl -sfL https://get.k3s.io | K3S_URL=https://myserver:6443 K3S_TOKEN=mynodetoken sh -
 
-echo "[K3S] : Copy naster-node-token to (/vagrant/scripts/node-token)"
-sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/scripts/
-sudo apt-get install net-tools -y
-echo "[machine : $(hostname)] has been setup succefully!"
+# echo "[K3S] : Copy naster-node-token to (/vagrant/scripts/node-token)"
+# sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/scripts/
+# sudo apt-get install net-tools -y
+# echo "[machine : $(hostname)] has been setup succefully!"
 # sudo kubectl get all -n kube-system
 
 echo ".......................... Done"
