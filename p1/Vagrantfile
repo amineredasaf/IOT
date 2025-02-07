@@ -5,11 +5,6 @@ BOX="ubuntu/jammy64"
 # BOX_VERSION="2011.0"
 BOX_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-vagrant.box"
 
-
-# BOX="debian/jessie64"
-# BOX_VERSION="8.11.1"
-# BOX_URL="https://portal.cloud.hashicorp.com/vagrant/discover/debian/jessie64/versions/8.11.1"
-
 VM_MASTER_NAME="rsafS"
 VM_WORKER_NAME="rsafSW"
 MASTER_IP="192.168.56.110"
@@ -24,16 +19,19 @@ VM_SRC_PATH=
 Vagrant.configure("2") do |config|
 
   config.vm.box = BOX
-  # config.vm.box_version = BOX_VERSION
   config.vm.box_url= BOX_URL
   
+
+
+  # this is Master Node.
   config.vm.define VM_MASTER_NAME do |control|
     control.vm.network "private_network", ip:  MASTER_IP
     control.vm.hostname = VM_MASTER_NAME
+    control.vm.synced_folder ".",  "/vagrant"
     control.vm.provision "shell" do |p|
       p.privileged= true, 
       p.path= "scripts/master.sh", 
-      p.args= [MASTER_IP]
+      p.args= [MASTER_IP, "Installing Worker Node"]
     end
     control.vm.provider "virtualbox" do |vb|
       vb.memory=MEM
@@ -42,10 +40,12 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  # this is Worker Node or Agent Node.
   config.vm.define VM_WORKER_NAME do |control|
-    control.vm.network "public_network", ip: "192.168.56.111"
+    control.vm.network "private_network", ip: "192.168.56.111"
     control.vm.hostname = VM_WORKER_NAME
-    control.vm.provision "shell", privileged: true, path: "scrpts/worker.sh", args: [WORKER_IP]
+    control.vm.synced_folder ".",  "/vagrant"
+    control.vm.provision "shell", privileged: true, path: "scripts/worker.sh", args: [WORKER_IP, MASTER_IP, "Installing Worker Node"]
     control.vm.provider "virtualbox" do |vb|
       vb.memory=MEM
       vb.cpus=CPU

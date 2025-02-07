@@ -1,34 +1,28 @@
-# Update The mirroList
-# echo "Update mirror"
-# sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-# sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-# sudo yum update -y
-
-
-echo "Hello World"
+# welcome message.
+echo "---------------------------------------------" 
+echo "Hello World - $2 - Address $1" 
+echo "---------------------------------------------" 
 sudo systemctl disable --now  ufw
-# curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server" sh -s - --token 12345
-sudo curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --flannel-backend none" K3S_TOKEN=12345 sh -s -
+# sudo apt-get update && sudo apt-get upgrade -y
+# install master node
+sudo curl -sfL https://get.k3s.io | \
+    INSTALL_K3S_EXEC="server --node-ip $1" \
+    K3S_TOKEN=12345 \
+    sh -s -
 
-echo "[K3S] : Copy naster-node-token to (/vagrant/scripts/node-token)"
-sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/scripts/
-sudo apt-get install net-tools -y
-echo "[machine : $(hostname)] has been setup succefully!"
-# sudo kubectl get all -n kube-system
-
-echo ".......................... Done"
-
-# # The connection to the server 127.0.0.1:6443 was refused - did you specify the right host or port?
-# # Job for k3s.service failed. See 'systemctl status k3s.service' and 'journalctl -xn' for details.
-
-# # sudo apt-get install systemd -y
-# # sudo apt-get install --reinstall systemd -y
+sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/confs/
 
 
+# sudo cat /etc/rancher/k3s/k3s.yaml > ~/.kube/config
 
-# # # testing :
-# echo "[K3S] : installing..."
-# # export INSTALL_K3S_EXEC="--write-kubeconfig-mode=644 --tls-san $(hostname) --node-ip $1  --bind-address=$1 --advertise-address=$1 "
-# # curl -sfL https://get.k3s.io |  sh -
+# node toekn : /var/lib/rancher/k3s/server/node-token
 
-# # sudo apt-get update && sudo apt-get upgrade -y
+# CMD Lines:
+# sudo kubectl get nodes -o wide - see detailed information about the node
+# sudo kubectl apply -f nginx-pod.yaml
+# sudo kubectl get pods
+# sudo kubectl port-forward nginx 8080:80
+# sudo kubectl delete pod nginx
+# sudo kubectl top pods
+# sudo kubectl top nodes
+# sudo kubectl describe pod nginx
