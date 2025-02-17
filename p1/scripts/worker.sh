@@ -12,3 +12,5 @@ curl -sfL https://get.k3s.io | \
     K3S_URL=https://$2:6443 \
     K3S_TOKEN_FILE="/vagrant/confs/node-token" \
     sh -
+
+sudo echo 'alias k=kubectl' >> /home/vagrant/.bashrc
