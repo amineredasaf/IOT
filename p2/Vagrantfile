@@ -1,27 +1,38 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+BOX="ubuntu/jammy64"
+BOX_URL="https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64-vagrant.box"
+
+VM_MASTER_NAME="rsafS"
+MASTER_IP="192.168.56.110"
+CPU=1
+MEM=1024
+
+HOST_SRC_PATH=
+VM_SRC_PATH=
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "centos/7"
+
+  config.vm.box = BOX
+  config.vm.box_url= BOX_URL
   
-  config.vm.define "rsafS" do |control|
-    control.vm.provider "virtualbox" do |v|
-      v.name = "rsafS"
+
+
+  # this is Master Node.
+  config.vm.define VM_MASTER_NAME do |control|
+    control.vm.network "private_network", ip:  MASTER_IP
+    control.vm.hostname = VM_MASTER_NAME
+    control.vm.synced_folder ".",  "/vagrant"
+    control.vm.provision "shell" do |p|
+      p.privileged= true, 
+      p.path= "scripts/master.sh", 
+      p.args= [MASTER_IP, "Installing Master Node"]
     end
-    control.vm.hostname = "rsafS"
-    control.vm.network "private_network", ip: "192.168.56.110"
-    control.vm.network "public_network"
-    control.vm.network "forwarded_port", guest: 80, host: 8080
-    control.vm.provision "shell", inline: <<-SHELL
-
-      sudo sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
-
-      sudo sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-*
-
-      curl -sfL https://get.k3s.io | sh -
-
-      mkdir ~/.kube/
-      sudo chmod 777 /etc/rancher/k3s/k3s.yaml
-      sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
-      export KUBECONFIG='/etc/rancher/k3s/k3s.yaml'
-      echo "Provisioning complete"
-    SHELL
+    control.vm.provider "virtualbox" do |vb|
+      vb.memory=MEM
+      vb.cpus=CPU
+      vb.name=VM_MASTER_NAME
+    end
   end
 end
