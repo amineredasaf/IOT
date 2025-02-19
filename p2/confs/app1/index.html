@@ -3,24 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>app one</title>
+    <title>App One</title>
     <style>
+        /* Global reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body, html {
             height: 100%;
-            margin: 0;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            color: #333;
         }
-        .center-text {
-            font-size: 24px;
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        .logo {
+            width: 100px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #3d5a80;
+            margin-bottom: 20px;
+        }
+        .subtitle {
+            font-size: 16px;
+            color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="center-text">
-        app one
+
+    <div class="container">
+        <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/3/39/Kubernetes_logo_without_workmark.svg" alt="Kubernetes Logo">
+        <div class="title">App One</div>
+        <div class="subtitle">My Kubernetes app</div>
     </div>
+
 </body>
 </html>
