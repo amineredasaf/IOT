@@ -3,9 +3,17 @@ echo "---------------------------------------------"
 echo "Hello World - $2 - Address $1" 
 echo "---------------------------------------------" 
 
+mkdir /home/vagrant/.kube
 
 
 sudo curl -sfL https://get.k3s.io | \
     INSTALL_K3S_EXEC="server --node-ip $1" \
     K3S_TOKEN=12345 \
     sh -s -
+sudo echo 'alias k=kubectl' >> /home/vagrant/.bashrc
+sudo echo 'export KUBECONFIG=/home/vagrant/.kube/config' >> /home/vagrant/.bashrc
+
+sudo cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
+sudo chmod 644 /home/vagrant/.kube/config
+
+source ~/.bashrc
