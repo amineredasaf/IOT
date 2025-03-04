@@ -18,7 +18,6 @@ Vagrant.configure("2") do |config|
   config.vm.box_url= BOX_URL
   
 
-
   # this is Master Node.
   config.vm.define VM_MASTER_NAME do |control|
     control.vm.network "private_network", ip:  MASTER_IP
