@@ -11,7 +11,6 @@ sudo curl -sfL https://get.k3s.io | \
     sh -s -
 
 sudo cp /var/lib/rancher/k3s/server/node-token /vagrant/confs/
-
 # alias k=kubectl
 
 sudo echo 'alias k=kubectl' >> /home/vagrant/.bashrc

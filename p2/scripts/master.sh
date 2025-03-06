@@ -16,11 +16,11 @@ sudo echo 'export KUBECONFIG=/home/vagrant/.kube/config' >> /home/vagrant/.bashr
 sudo cp /etc/rancher/k3s/k3s.yaml /home/vagrant/.kube/config
 sudo chmod 644 /home/vagrant/.kube/config
 
-k apply -f /vagrant/confs/service.yaml
-k apply -f /vagrant/confs/ingress.yaml
-k apply -f /vagrant/confs/deployment.yaml
-
 source ~/.bashrc
+sudo kubectl apply -f /vagrant/confs/service.yaml
+sudo kubectl apply -f /vagrant/confs/ingress.yaml
+sudo kubectl apply -f /vagrant/confs/deployment.yaml
+
 
 
 # # # # Install k9s to explain only # # # #
