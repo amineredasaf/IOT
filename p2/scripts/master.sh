@@ -7,7 +7,7 @@ mkdir /home/vagrant/.kube
 
 
 sudo curl -sfL https://get.k3s.io | \
-    INSTALL_K3S_EXEC="server --node-ip $1" \
+    INSTALL_K3S_EXEC="server --node-ip $1 --bind-address=$1" \
     K3S_TOKEN=12345 \
     sh -s -
 sudo echo 'alias k=kubectl' >> /home/vagrant/.bashrc
