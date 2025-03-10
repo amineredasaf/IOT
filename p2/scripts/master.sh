@@ -19,7 +19,9 @@ sudo chmod 644 /home/vagrant/.kube/config
 source ~/.bashrc
 sudo kubectl apply -f /vagrant/confs/service.yaml
 sudo kubectl apply -f /vagrant/confs/ingress.yaml
-sudo kubectl apply -f /vagrant/confs/deployment.yaml
+sudo kubectl apply -f /vagrant/confs/app1/deployment.yaml
+sudo kubectl apply -f /vagrant/confs/app2/deployment.yaml
+sudo kubectl apply -f /vagrant/confs/app3/deployment.yaml
 
 
 

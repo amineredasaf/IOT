@@ -16,7 +16,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.box = BOX
   config.vm.box_url= BOX_URL
-  
 
   # this is Master Node.
   config.vm.define VM_MASTER_NAME do |control|
@@ -24,7 +23,7 @@ Vagrant.configure("2") do |config|
     control.vm.hostname = VM_MASTER_NAME
     control.vm.synced_folder ".",  "/vagrant"
     control.vm.provision "shell" do |p|
-      p.privileged= true, 
+      p.privileged= true,
       p.path= "scripts/master.sh", 
       p.args= [MASTER_IP, "Installing Master Node"]
     end
