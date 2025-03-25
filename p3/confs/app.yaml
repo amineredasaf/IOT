@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: wf-ofpython-  # Name of this Workflow
+spec:
+  entrypoint: ofpython        # Defines "whalesay" as the "main" template
+  templates:
+  - name: ofpython            # Defining the "whalesay" template
+    container:
+      image: python:latest
+      command: [echo, "OK!!"]
+      # args: ["hello world"]   # This template runs "cowsay" in the "whalesay" image with arguments "hello world"
+
